@@ -1,80 +1,73 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import ResultComponent from './ResultComponent';
 import KeyPadComponent from "./KeyPadComponent";
 
-class App extends Component {
-    constructor(){
-        super();
+function App() {
+    const [result, setResult] = useState("");
+    
 
-        this.state = {
-            result: ""
-        }
-    }
-
-    onClick = button => {
+    const onClick = button => {
 
         if(button === "="){
-            this.calculate()
+            calculate()
         }
 
         else if(button === "C"){
-            this.reset()
+            resetCalc()
         }
         else if(button === "CE"){
-            this.backspace()
+            backspace()
         }
 
         else {
-            this.setState({
-                result: this.state.result + button
-            })
+            setResult(
+               result + button
+            )
         }
     };
 
 
-    calculate = () => {
+    const calculate = () => {
         var finalResult = ''
         
-        finalResult = this.state.result
+        finalResult = result
         
 
         try {
-            this.setState({
-                result: (eval(finalResult)) 
-            })
+            setResult(
+                (eval(finalResult)) 
+            )
         } catch (e) {
-            this.setState({
-                result: "error"
-            })
+            setResult(
+                "error"
+            )
 
         }
 		
     };
 
-    reset = () => {
-        this.setState({
-            result: ""
-        })
+    const resetCalc = () => {
+        setResult(
+            ""
+        )
     };
 
-    backspace = () => {
-        this.setState({
-            result: this.state.result.slice(0, -1)
-        })
+    const backspace = () => {
+        setResult(
+            result.slice(0, -1)
+        )
     };
 
-    render() {
-        return (
-            <div>
-                <div className="calculator-body">
-                    <h1>D's Calc!</h1>
-                    <ResultComponent result={this.state.result}/>
-                    <KeyPadComponent onClick={this.onClick}/>
-                </div>
+    return (
+        <div>
+            <div className="calculator-body">
+                <h1>D's Calc!</h1>
+                <ResultComponent result={result}/>
+                <KeyPadComponent onClick={onClick}/>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default App;
